@@ -1,4 +1,5 @@
 import pygame
+from math import acos, cos, sin
 
 WIDTH, HEIGHT = (800,800)
 pygame.init()
@@ -18,12 +19,21 @@ gray = (130,130,130)
 middle_block_pos = (402, 373)
 
 
-def getpos():
-    from math import acos, cos, sin, degrees
-    pos = pygame.mouse.get_pos()
 
-    # get the angle from the square the 'pos' is and then draw the
-    # circle at that same angle from the square ROPELEN away 
+def startsim(coord, g, m):
+    pass    
+
+
+
+
+
+
+
+
+
+
+def getpos():
+    pos = pygame.mouse.get_pos()
 
     # avoid division by zero error (kinda shitty)
     if pos[1] == middle_block_pos[1]:
@@ -40,15 +50,8 @@ def getpos():
         theta *= -1
 
 
-    print("cos degrees: " + str(degrees(theta)))
-
-    print(ROPELEN * sin(theta))
-    print(ROPELEN * cos(theta))
-
-    coord = ((ROPELEN * sin(theta) + middle_block_pos[0]), (ROPELEN *
-cos(theta) + middle_block_pos[1]))
-
-
+    coord = [ROPELEN * sin(theta) + middle_block_pos[0], ROPELEN *
+cos(theta) + middle_block_pos[1]]
     return coord
 
 
@@ -58,16 +61,11 @@ def draw(ball_pos):
     pygame.draw.rect(WIN, red, (398, 370, 10, 10))
 
     # draw the ball and have it be moveable 
-    pygame.draw.circle(WIN, blue, ball_pos, 15)
+    pygame.draw.circle(WIN, blue, (ball_pos[0], ball_pos[1]), 15)
 
     # draw a line connecting the ball to the square at all times
-    pygame.draw.line(WIN, gray, middle_block_pos, ball_pos)
-
-
-
-
-    # ball can only move along the path of the string (this sim assumes
-    # a tought line)
+    pygame.draw.line(WIN, gray, middle_block_pos, (ball_pos[0],
+ball_pos[1]))
 
     pygame.display.update()
 
@@ -77,6 +75,7 @@ def draw(ball_pos):
 def main():
     run = True
     final_pos = False
+    start = False
     clock = pygame.time.Clock()
 
 
@@ -84,14 +83,24 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+
             if event.type == pygame.MOUSEBUTTONDOWN :
                 final_pos = not final_pos
+                start = False
 
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE and final_pos:
+                    start = not start
 
 
         if final_pos == False:
             ball_pos = getpos()
 
+        if start:
+            #startsim(ball_pos, G, BALL_MASS)
+            print("start")
+            ball_pos[0] -= 1
+            ball_pos[1] += 1
 
         draw(ball_pos)
         clock.tick(FPS)
