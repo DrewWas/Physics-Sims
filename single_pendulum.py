@@ -19,12 +19,11 @@ middle_block_pos = (294, 133)
 
 
 def getpos():
-    from math import atan, asin, acos, degrees
+    from math import acos, cos, sin, degrees
     pos = pygame.mouse.get_pos()
 
     # get the angle from the square the 'pos' is and then draw the
     # circle at that same angle from the square ROPELEN away 
-
 
     # avoid division by zero error (kinda shitty)
     if pos[1] == middle_block_pos[1]:
@@ -35,18 +34,21 @@ def getpos():
 
 
     hyp = ((x_diff ** 2) + (y_diff ** 2)) ** 0.5
-    cosTheta = y_diff / hyp
-    cos = acos(cosTheta)
+    costheta = y_diff / hyp
+    theta = acos(costheta)
     if pos[0] < middle_block_pos[0]:
-        cos *= -1
-
-    print("cos degrees: " + str(degrees(cos)))
+        theta *= -1
 
 
+    print("cos degrees: " + str(degrees(theta)))
+
+    print(ROPELEN * sin(theta))
+    print(ROPELEN * cos(theta))
+
+    coord = ((ROPELEN * sin(theta) + 294), (ROPELEN * cos(theta) + 133))
 
 
-
-    return pos
+    return coord
 
 
 
