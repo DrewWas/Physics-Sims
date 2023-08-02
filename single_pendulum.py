@@ -1,6 +1,6 @@
 import pygame
 
-WIDTH, HEIGHT = (600,600)
+WIDTH, HEIGHT = (800,800)
 pygame.init()
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("single pendulum")
@@ -8,14 +8,14 @@ pygame.display.set_caption("single pendulum")
 
 # constants
 FPS = 60
-ROPELEN = 200
+ROPELEN = 300
 BALL_MASS = 10  # kg
 black = (0,0,0)
 blue = (0, 138, 255)
 white = (255,255,255)
 red = (255,23,54)
 gray = (130,130,130)
-middle_block_pos = (294, 133)
+middle_block_pos = (402, 373)
 
 
 def getpos():
@@ -45,7 +45,8 @@ def getpos():
     print(ROPELEN * sin(theta))
     print(ROPELEN * cos(theta))
 
-    coord = ((ROPELEN * sin(theta) + 294), (ROPELEN * cos(theta) + 133))
+    coord = ((ROPELEN * sin(theta) + middle_block_pos[0]), (ROPELEN *
+cos(theta) + middle_block_pos[1]))
 
 
     return coord
@@ -54,7 +55,7 @@ def getpos():
 
 def draw(ball_pos):
     WIN.fill(black)
-    pygame.draw.rect(WIN, red, (290, 130, 10, 10))
+    pygame.draw.rect(WIN, red, (398, 370, 10, 10))
 
     # draw the ball and have it be moveable 
     pygame.draw.circle(WIN, blue, ball_pos, 15)
