@@ -9,6 +9,7 @@ pygame.display.set_caption("single pendulum")
 # constants
 FPS = 60
 ROPELEN = 200
+BALL_MASS = 10  # kg
 black = (0,0,0)
 blue = (0, 138, 255)
 white = (255,255,255)
@@ -18,7 +19,7 @@ middle_block_pos = (294, 133)
 
 
 def getpos():
-    from math import atan, sin, cos, degrees
+    from math import atan, asin, acos, degrees
     pos = pygame.mouse.get_pos()
 
     # get the angle from the square the 'pos' is and then draw the
@@ -30,17 +31,22 @@ def getpos():
         y_diff = 0.00001 
     else: 
         y_diff = (pos[1] - middle_block_pos[1])
-
     x_diff = (pos[0] - middle_block_pos[0])
-    tanTheta = (x_diff/y_diff)
-    theta_rad = atan(tanTheta)
-
-    print("degrees: " + str(degrees(theta_rad)))
-
-    coord = None 
 
 
-    return coord
+    hyp = ((x_diff ** 2) + (y_diff ** 2)) ** 0.5
+    cosTheta = y_diff / hyp
+    cos = acos(cosTheta)
+    if pos[0] < middle_block_pos[0]:
+        cos *= -1
+
+    print("cos degrees: " + str(degrees(cos)))
+
+
+
+
+
+    return pos
 
 
 
@@ -75,7 +81,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN :
                 final_pos = not final_pos
 
 
