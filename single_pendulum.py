@@ -1,5 +1,6 @@
 import pygame
 from math import acos, cos, sin
+import time
 
 WIDTH, HEIGHT = (800,800)
 pygame.init()
@@ -11,6 +12,7 @@ pygame.display.set_caption("single pendulum")
 FPS = 60
 ROPELEN = 300
 BALL_MASS = 10  # kg
+G = 9.8         # ms^-2
 black = (0,0,0)
 blue = (0, 138, 255)
 white = (255,255,255)
@@ -20,19 +22,7 @@ middle_block_pos = (402, 373)
 
 
 
-def startsim(coord, g, m):
-    pass    
-
-
-
-
-
-
-
-
-
-
-def getpos():
+def getangle():
     pos = pygame.mouse.get_pos()
 
     # avoid division by zero error (kinda shitty)
@@ -48,11 +38,22 @@ def getpos():
     theta = acos(costheta)
     if pos[0] < middle_block_pos[0]:
         theta *= -1
+    return theta
 
 
-    coord = [ROPELEN * sin(theta) + middle_block_pos[0], ROPELEN *
-cos(theta) + middle_block_pos[1]]
+def getpos():
+    pos_theta = getangle()
+    coord = [ROPELEN * sin(pos_theta) + middle_block_pos[0], ROPELEN *
+cos(pos_theta) + middle_block_pos[1]]
     return coord
+
+
+init_pos = getpos()
+def startsim(coord, g, m):
+
+    return None 
+
+
 
 
 
@@ -97,10 +98,11 @@ def main():
             ball_pos = getpos()
 
         if start:
-            #startsim(ball_pos, G, BALL_MASS)
-            print("start")
+            #ball_pos = startsim(ball_pos, G, BALL_MASS)
             ball_pos[0] -= 1
             ball_pos[1] += 1
+
+
 
         draw(ball_pos)
         clock.tick(FPS)
