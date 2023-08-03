@@ -11,7 +11,7 @@ pygame.display.set_caption("single pendulum")
 # constants
 FPS = 60
 ROPELEN = 300
-BALL_MASS = 10  # kg
+BALL_MASS = 0.1  # kg
 G = 9.8         # ms^-2
 black = (0,0,0)
 blue = (0, 138, 255)
@@ -19,7 +19,7 @@ white = (255,255,255)
 red = (255,23,54)
 gray = (130,130,130)
 middle_block_pos = (402, 373)
-
+time_init = time.time()
 
 
 def getangle():
@@ -78,6 +78,7 @@ def main():
     final_pos = False
     start = False
     clock = pygame.time.Clock()
+    y_velo = 0
 
 
     while run:
@@ -88,6 +89,8 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN :
                 final_pos = not final_pos
                 start = False
+                y_velo = 0
+                time_init = time.time()
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and final_pos:
@@ -99,10 +102,16 @@ def main():
 
         if start:
             #ball_pos = startsim(ball_pos, G, BALL_MASS)
-            ball_pos[0] -= 1
-            ball_pos[1] += 1
 
+            timenotinit = time.time()
+            elap = timenotinit - time_init
+            #x_velo = 
+            y_acell = G * BALL_MASS
+            y_velo += y_acell * elap
 
+            #ball_pos[0] += y_velo
+            print(elap)
+            ball_pos[1] += y_velo * elap
 
         draw(ball_pos)
         clock.tick(FPS)
