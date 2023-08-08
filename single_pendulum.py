@@ -19,8 +19,14 @@ white = (255,255,255)
 red = (255,23,54)
 gray = (130,130,130)
 middle_block_pos = (402, 373)
+y_velo = 0
+x_velo = 0
 time_init = time.time()
 
+
+
+# WE NEED TO RESTRUCTURE THE FUNCTIONS BECAUSE WE NEED TO BE ABLE TO
+# CHANGE THETA AND THEN DRAW BASED ON THETA, NOT ON x_pos and y_pos
 
 def getangle():
     pos = pygame.mouse.get_pos()
@@ -56,7 +62,6 @@ def startsim(coord, g, m):
 
 
 
-
 def draw(ball_pos):
     WIN.fill(black)
     pygame.draw.rect(WIN, red, (398, 370, 10, 10))
@@ -78,7 +83,7 @@ def main():
     final_pos = False
     start = False
     clock = pygame.time.Clock()
-    y_velo = 0
+    theta = getangle()
 
 
     while run:
@@ -89,6 +94,7 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN :
                 final_pos = not final_pos
                 start = False
+                x_velo = 0
                 y_velo = 0
                 time_init = time.time()
 
@@ -97,21 +103,25 @@ def main():
                     start = not start
 
 
+
         if final_pos == False:
             ball_pos = getpos()
 
         if start:
             #ball_pos = startsim(ball_pos, G, BALL_MASS)
 
+
             timenotinit = time.time()
             elap = timenotinit - time_init
-            #x_velo = 
-            y_acell = G * BALL_MASS
-            y_velo += y_acell * elap
 
-            #ball_pos[0] += y_velo
-            print(elap)
-            ball_pos[1] += y_velo * elap
+            #x_acell = G * BALL_MASS
+            #x_velo += x_acell * elap
+            #y_acell = G * BALL_MASS * sin(theta)
+            #y_velo += y_acell * elap
+
+            print(elap, sin(getangle()))
+            ball_pos[0] += 1
+            ball_pos[1] += 1
 
         draw(ball_pos)
         clock.tick(FPS)
