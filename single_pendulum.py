@@ -25,9 +25,6 @@ time_init = time.time()
 
 
 
-# WE NEED TO RESTRUCTURE THE FUNCTIONS BECAUSE WE NEED TO BE ABLE TO
-# CHANGE THETA AND THEN DRAW BASED ON THETA, NOT ON x_pos and y_pos
-
 def getangle():
     pos = pygame.mouse.get_pos()
 
@@ -111,17 +108,19 @@ def main():
             #ball_pos = startsim(ball_pos, G, BALL_MASS)
 
 
+            # GETANGLE() is dependent on MOUSE POS, not BALL POS
+            # fix this!!!
             timenotinit = time.time()
             elap = timenotinit - time_init
 
-            #x_acell = G * BALL_MASS
-            #x_velo += x_acell * elap
-            #y_acell = G * BALL_MASS * sin(theta)
-            #y_velo += y_acell * elap
+            x_acell = G * BALL_MASS * cos(getangle())
+            x_velo += x_acell * elap
+            y_acell = G * BALL_MASS * sin(getangle())
+            y_velo += y_acell * elap
 
             print(elap, sin(getangle()))
-            ball_pos[0] += 1
-            ball_pos[1] += 1
+            ball_pos[0] += x_velo
+            ball_pos[1] += y_velo
 
         draw(ball_pos)
         clock.tick(FPS)
