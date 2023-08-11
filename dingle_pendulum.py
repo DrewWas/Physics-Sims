@@ -7,8 +7,7 @@ win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("pendulum")
 
 G = 9.8              #m/s^2
-#mass = 0.001         #kg
-mass = 1       #kg
+mass = 1             #kg
 black = (0,0,0)
 gray = (128,128,128)
 blue = (0,138,255)
@@ -28,6 +27,15 @@ while run:
             start_time = time()
             ball_pos = list(init_pos)
 
+            #
+            x_diff =  ball_pos[0] - (block_x + 4)
+            y_diff =  ball_pos[1] - (block_y + 4)
+            rope_len = ((x_diff ** 2) + (y_diff ** 2)) ** 0.5
+            period = 2 * pi * ((rope_len / G) ** 0.5)
+            angle_rad = atan2(x_diff, y_diff)    # which do we use???
+            angle_deg = degrees(angle_rad)       # which do we use???
+            #
+
 
     win.fill(black)
 
@@ -44,12 +52,12 @@ while run:
 
 
         # get angle
-        x_diff =  ball_pos[0] - (block_x + 4)
-        y_diff =  ball_pos[1] - (block_y + 4)
-        rope_len = ((x_diff ** 2) + (y_diff ** 2)) ** 0.5
-        period = 2 * pi * ((rope_len / G) ** 0.5)
-        angle_rad = atan2(x_diff, y_diff)    # which do we use???
-        angle_deg = degrees(angle_rad)       # which do we use???
+        #x_diff =  ball_pos[0] - (block_x + 4)
+        #y_diff =  ball_pos[1] - (block_y + 4)
+        #rope_len = ((x_diff ** 2) + (y_diff ** 2)) ** 0.5
+        #period = 2 * pi * ((rope_len / G) ** 0.5)
+        #angle_rad = atan2(x_diff, y_diff)    # which do we use???
+        #angle_deg = degrees(angle_rad)       # which do we use???
 
         # get elapsed time
         elap_time = time() - start_time
@@ -61,43 +69,12 @@ while run:
         
         ball_pos[0] = block_x + 4 + rope_len * sin(theta)
         ball_pos[1] = block_y + 4 + rope_len * cos(theta)
-
-        """
-        Now we have 2 options:
-        1. Update ball pos based on x and y component forces 
-        2. Update ball based on change in angle theta * we use this one *
-        """
-
-
-
-
+        print(degrees(theta))
 
     pygame.display.update()
 
 
-"""
-PLAN:
 
-* Draw a single block to the screen (anchor point) *************
-
-* Draw a ball to the screen with variable x and y coords ************
-
-* The ball is moveable by the mouse until a click      *************
-	- After the click, the x and y coords are locked  **************
-
-* The x and y coords of the ball are updateable     ************
-
-* Do the math on forces (even tho some may not be visually present)
-	- Get angle    *******
-	- Get elapsed time   ********
-	- Get forces
-	- Apply forces
-
-
-
-* Attach string
-
-"""
 
 
 
