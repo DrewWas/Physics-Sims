@@ -1,13 +1,14 @@
 import pygame
 from time import time
-from math import cos, sin, atan2, degrees
+from math import cos, sin, atan2, degrees, pi
 
 WIDTH, HEIGHT = (800, 800)
 win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("pendulum")
 
 G = 9.8              #m/s^2
-mass = 0.001         #kg
+#mass = 0.001         #kg
+mass = 1       #kg
 black = (0,0,0)
 gray = (128,128,128)
 blue = (0,138,255)
@@ -27,6 +28,7 @@ while run:
             start_time = time()
             ball_pos = list(init_pos)
 
+
     win.fill(black)
 
     #Draw a single block to the screen (anchor point)
@@ -45,28 +47,25 @@ while run:
         x_diff =  ball_pos[0] - (block_x + 4)
         y_diff =  ball_pos[1] - (block_y + 4)
         rope_len = ((x_diff ** 2) + (y_diff ** 2)) ** 0.5
+        period = 2 * pi * ((rope_len / G) ** 0.5)
         angle_rad = atan2(x_diff, y_diff)    # which do we use???
         angle_deg = degrees(angle_rad)       # which do we use???
 
         # get elapsed time
         elap_time = time() - start_time
-        #print(elap_time)
-        #print("cos: " + str(cos(angle_rad)))
-        #print("sin: " + str(sin(angle_rad)))
+        
+        # if this doesnt work, try moving angle_rad = under  if
+        # event.type == MOUSEDOWN bc then it will not change
 
-        # get forces
-        #y_accell = mass * G * sin(angle_rad)
-        y_accell = (mass * G * sin(angle_rad) ) * 100
-        print(y_accell)
-        ball_pos[0] += -1
-        ball_pos[1] += y_accell
-
-
+        theta = angle_rad * cos(elap_time * ((G / rope_len) ** 0.5))        
+        
+        ball_pos[0] = block_x + 4 + rope_len * sin(theta)
+        ball_pos[1] = block_y + 4 + rope_len * cos(theta)
 
         """
         Now we have 2 options:
         1. Update ball pos based on x and y component forces 
-        2. Update ball based on change in angle theta 
+        2. Update ball based on change in angle theta * we use this one *
         """
 
 
