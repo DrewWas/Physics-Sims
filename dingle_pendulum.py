@@ -19,7 +19,7 @@ while run:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             gameStart = not gameStart
-            ball_pos = init_pos
+            ball_pos = list(init_pos)
 
     win.fill(black)
 
@@ -33,7 +33,8 @@ while run:
 
     if gameStart:
         pygame.draw.circle(win, blue, (ball_pos), 20)
-
+        ball_pos[0] += 1
+        ball_pos[1] += 1
 
     pygame.display.update()
 
