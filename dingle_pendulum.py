@@ -4,16 +4,23 @@ WIDTH, HEIGHT = (800, 800)
 win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("pendulum")
 
+black = (0,0,0)
+white = (255,255,255)
+gray = (128,128,128)
+blue = (0,138,255)
+red = (255, 23, 54)
+
+
 run = True
-
-
 while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
 
-    pygame.draw.rect(
 
+    win.fill(black)
+    pygame.draw.rect(win, red, ((WIDTH // 2) - 20, (HEIGHT // 2) - 125, 10, 10))
+    pygame.display.update()
 
 
 """
