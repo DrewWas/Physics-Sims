@@ -15,6 +15,7 @@ red = (255, 23, 54)
 block_x = (WIDTH // 2) - 20
 block_y = (HEIGHT// 2) - 125
 gameStart = False
+dt = 0.01
 
 run = True
 while run:
@@ -32,8 +33,7 @@ while run:
             y_diff =  ball_pos[1] - (block_y + 4)
             rope_len = ((x_diff ** 2) + (y_diff ** 2)) ** 0.5
             period = 2 * pi * ((rope_len / G) ** 0.5)
-            angle_rad = atan2(x_diff, y_diff)    # which do we use???
-            angle_deg = degrees(angle_rad)       # which do we use???
+            angle_rad = atan2(x_diff, y_diff)
             #
 
 
@@ -51,13 +51,6 @@ while run:
         pygame.draw.line(win, gray, (block_x + 4, block_y + 4), (ball_pos))
 
 
-        # get angle
-        #x_diff =  ball_pos[0] - (block_x + 4)
-        #y_diff =  ball_pos[1] - (block_y + 4)
-        #rope_len = ((x_diff ** 2) + (y_diff ** 2)) ** 0.5
-        #period = 2 * pi * ((rope_len / G) ** 0.5)
-        #angle_rad = atan2(x_diff, y_diff)    # which do we use???
-        #angle_deg = degrees(angle_rad)       # which do we use???
 
         # get elapsed time
         elap_time = time() - start_time
@@ -65,6 +58,7 @@ while run:
         # if this doesnt work, try moving angle_rad = under  if
         # event.type == MOUSEDOWN bc then it will not change
 
+        #theta = angle_rad * cos(elap_time * ((G / rope_len) ** 0.5))        
         theta = angle_rad * cos(elap_time * ((G / rope_len) ** 0.5))        
         
         ball_pos[0] = block_x + 4 + rope_len * sin(theta)
@@ -72,7 +66,6 @@ while run:
         print(degrees(theta))
 
     pygame.display.update()
-
 
 
 
