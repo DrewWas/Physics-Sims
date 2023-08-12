@@ -6,11 +6,15 @@ WIDTH, HEIGHT = (800, 800)
 win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("pendulum")
 
-G = 9.8              #m/s^2
-mass = 1             #kg
+# we increase G in order to increase the period, thus making the pendulum swing faster
+G = 9.81 * 500
+mass = 1
 black = (0,0,0)
 gray = (128,128,128)
+# blue ball is small angle approximation
 blue = (0,138,255)
+# pink ball is solved using the non-linear DEq
+pink = (255, 41, 255)
 red = (255, 23, 54)
 block_x = (WIDTH // 2) - 20
 block_y = (HEIGHT// 2) - 125
@@ -26,11 +30,12 @@ while run:
         if event.type == pygame.MOUSEBUTTONDOWN:
             gameStart = not gameStart
             start_time = time()
-            ball_pos = list(init_pos)
+            blue_ball_pos = list(init_pos)
+            pink_ball_pos = list(init_pos)
 
             #
-            x_diff =  ball_pos[0] - (block_x + 4)
-            y_diff =  ball_pos[1] - (block_y + 4)
+            x_diff =  blue_ball_pos[0] - (block_x + 4)
+            y_diff =  blue_ball_pos[1] - (block_y + 4)
             rope_len = ((x_diff ** 2) + (y_diff ** 2)) ** 0.5
             period = 2 * pi * ((rope_len / G) ** 0.5)
             angle_rad = atan2(x_diff, y_diff)
@@ -47,23 +52,18 @@ while run:
         pygame.draw.circle(win, blue, (init_pos), 20)
 
     if gameStart:
-        pygame.draw.circle(win, blue, (ball_pos), 20)
-        pygame.draw.line(win, gray, (block_x + 4, block_y + 4), (ball_pos))
-
-
+        pygame.draw.circle(win, blue, (blue_ball_pos), 20)
+        pygame.draw.line(win, gray, (block_x + 4, block_y + 4), (blue_ball_pos))
 
         # get elapsed time
         elap_time = time() - start_time
-        
-        # if this doesnt work, try moving angle_rad = under  if
-        # event.type == MOUSEDOWN bc then it will not change
-
-        #theta = angle_rad * cos(elap_time * ((G / rope_len) ** 0.5))        
         theta = angle_rad * cos(elap_time * ((G / rope_len) ** 0.5))        
+        real_theta = solve_ODE(theta)
         
-        ball_pos[0] = block_x + 4 + rope_len * sin(theta)
-        ball_pos[1] = block_y + 4 + rope_len * cos(theta)
-        print(degrees(theta))
+        blue_ball_pos[0] = block_x + 4 + rope_len * sin(theta)
+        blue_ball_pos[1] = block_y + 4 + rope_len * cos(theta)
+        pink_ball_pos[0] = block_x + 4 + rope_len * sin(real_theta)
+        pink_ball_pos[1] = block_y + 4 + rope_len * cos(real_theta)
 
     pygame.display.update()
 
