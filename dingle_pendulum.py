@@ -1,6 +1,7 @@
 import pygame
 from time import time
 from math import cos, sin, atan2, degrees, pi
+from scipy.integrate import odeint
 
 WIDTH, HEIGHT = (800, 800)
 win = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -20,6 +21,16 @@ block_x = (WIDTH // 2) - 20
 block_y = (HEIGHT// 2) - 125
 gameStart = False
 dt = 0.01
+
+
+def solve_ODE(g, l, theta0, omega0, t):
+    def pend(y, t, g, l):
+        theta, omega = y
+        dydt = [omega, -g/l * sin(theta)]
+        return dydt
+    sol = odeint(pend, [theta0, omega0], t, args=(g, l))
+    return sol[0][0]
+
 
 run = True
 while run:
@@ -53,17 +64,22 @@ while run:
 
     if gameStart:
         pygame.draw.circle(win, blue, (blue_ball_pos), 20)
+        pygame.draw.circle(win, pink, (pink_ball_pos), 20)
         pygame.draw.line(win, gray, (block_x + 4, block_y + 4), (blue_ball_pos))
+        pygame.draw.line(win, gray, (block_x + 4, block_y + 4), (pink_ball_pos))
 
         # get elapsed time
         elap_time = time() - start_time
         theta = angle_rad * cos(elap_time * ((G / rope_len) ** 0.5))        
-        real_theta = solve_ODE(theta)
+        real_theta = solve_ODE(G, rope_len, angle_rad, 0, [elap_time])
         
         blue_ball_pos[0] = block_x + 4 + rope_len * sin(theta)
         blue_ball_pos[1] = block_y + 4 + rope_len * cos(theta)
-        pink_ball_pos[0] = block_x + 4 + rope_len * sin(real_theta)
-        pink_ball_pos[1] = block_y + 4 + rope_len * cos(real_theta)
+        pink_ball_pos[0] = block_x + 4 + rope_len * sin(real_theta + 1)
+        pink_ball_pos[1] = block_y + 4 + rope_len * cos(real_theta + 1)
+        #print(sin(theta), sin(real_theta))
+        #print(cos(theta), cos(real_theta))
+        print(degrees(real_theta), degrees(theta))
 
     pygame.display.update()
 
