@@ -70,15 +70,18 @@ while run:
 
         # get elapsed time
         elap_time = time() - start_time
+
+        # get angles 
         theta = angle_rad * cos(elap_time * ((G / rope_len) ** 0.5))        
         real_theta = solve_ODE(G, rope_len, angle_rad, 0, [elap_time])
-        
+
+        # update blue ball position        
         blue_ball_pos[0] = block_x + 4 + rope_len * sin(theta)
         blue_ball_pos[1] = block_y + 4 + rope_len * cos(theta)
-        pink_ball_pos[0] = block_x + 4 + rope_len * sin(real_theta + 1)
-        pink_ball_pos[1] = block_y + 4 + rope_len * cos(real_theta + 1)
-        #print(sin(theta), sin(real_theta))
-        #print(cos(theta), cos(real_theta))
+
+        # update pink ball position
+        pink_ball_pos[0] = block_x + 4 + rope_len * sin(theta + 1)
+        pink_ball_pos[1] = block_y + 4 + rope_len * cos(theta + 1)
         print(degrees(real_theta), degrees(theta))
 
     pygame.display.update()

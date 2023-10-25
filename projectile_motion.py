@@ -8,20 +8,39 @@ pygame.display.set_caption("Projectile Motion")
 run = True
 clock = pygame.time.Clock()
 
-#Constants
-ball_x = 10.0
-ball_y = 730.0
-ball_v_x = 45.0 * cos(125)
-ball_v_y = 45.0 * sin(125) 
-ball_a_x = 0.0 
-ball_a_y = 9.8
-theta = None 
-time = 1.0 
+
+class Canon:
+    g = -9.81
+    def __init__(self, angle, magnitude):
+        self.angle = angle
+        self.magnitude = magnitude
+
+        self.x_pos = 0
+        self.y_pos = 0
+
+        self.x_velo = 0
+        self.y_velo = 0
+
+        self.y_acc = self.g 
 
 
-def draw_ball(x,y):
-    pygame.draw.circle(window, (0,138,255), (x,y), 15)
-    return None
+    def launch(self,time):
+        def ball_x_pos(time):
+            self.x_velo = self.magnitude * cos(self.angle)
+            self.x_pos += (self.x_velo * time) 
+            return self.x_pos 
+            
+
+        def ball_y_pos(time):
+            self.y_velo = self.magnitude * sin(self.angle)
+            self.y_pos += (self.y_velo * time) + ((1/2)*self.y_acc*(time**2))
+            return self.y_pos
+
+        return ball_x_pos(time), ball_y_pos(time)
+
+
+#class Ball:
+        
 
 
 
@@ -30,13 +49,14 @@ while run:
         if event.type == pygame.QUIT:
             run = False
 
-    #window.fill((0,0,0))
-    draw_ball(ball_x, ball_y)
-    ball_x = ball_x + (ball_v_x * time) + 0.5 * (ball_a_x * (time)**2)
-    ball_y = ball_y + (ball_v_y * time) + 0.5 * (ball_a_y * (time)**2)
-    
+    Canon = Canon(45, 10)
+    for i in range(100):
+        ball_x, ball_y = Canon.launch(i)
+        pygame.draw.circle(window, (0,138, 255), (ball_x, ball_y), 20)
+        print(ball_x, ball_y)
+   
+
     clock.tick(60)
-    time += 1.0
     pygame.display.update()
 
 
