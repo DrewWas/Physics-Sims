@@ -42,14 +42,13 @@ class Canon:
 #class Ball:
         
 
-
+Canon = Canon(45, 35)
 
 while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
 
-    Canon = Canon(45, 10)
     for i in range(100):
         ball_x, ball_y = Canon.launch(i)
         pygame.draw.circle(window, (0,138, 255), (ball_x, ball_y), 20)
