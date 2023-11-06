@@ -2,45 +2,34 @@ import pygame
 import math
 pygame.init()
 
-window = pygame.display.set_mode((700,700))
+WIDTH, HEIGHT = 750, 750
+window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Bounce Fr")
 clock = pygame.time.Clock()
 
 blue = (0, 138, 255)
 black = (0, 0, 0)
 
-class Ball:
-    def __init__(self, ball_x, ball_y, x_velo, y_velo):
-        self.x = ball_x
-        self.y = ball_y
-        self.vx = x_velo
-        self.vy = y_velo
 
+def draw_box(box_width, box_height, color):
+    x_pos = (WIDTH // 2) - (box_width // 2)
+    y_pos = (WIDTH // 2) - (box_height // 2)
+    pygame.draw.rect(window, color, (x_pos, y_pos, box_width, box_height), 5)
 
-    def draw(self):
-        window.fill(black)
-        pygame.draw.circle(window, blue, (self.x, self.y), 15)
-
-        
-    def update(self):
-        self.y += 9.8 * elap
-        pygame.display.update()
 
 def main():
     run = True
-    yuh = Ball(100,100,0,0)
     
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
 
-        yuh.draw()
-        yuh.update()
+        draw_box(500,500,blue)
+        pygame.display.update()
+
         clock.tick(60)
 
 main()
-
-
 
 

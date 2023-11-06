@@ -11,12 +11,13 @@ clock = pygame.time.Clock()
 
 class Canon:
     g = -9.81
+
     def __init__(self, angle, magnitude):
         self.angle = angle
         self.magnitude = magnitude
 
         self.x_pos = 0
-        self.y_pos = 0
+        self.y_pos = 750
 
         self.x_velo = 0
         self.y_velo = 0
@@ -33,7 +34,8 @@ class Canon:
 
         def ball_y_pos(time):
             self.y_velo = self.magnitude * sin(self.angle)
-            self.y_pos += (self.y_velo * time) + ((1/2)*self.y_acc*(time**2))
+            #self.y_pos += (self.y_velo * time) + ((1/2)*self.y_acc*(time**2))
+            self.y_pos -= (self.y_velo * time) + ((1/2)*self.y_acc*(time**2))
             return self.y_pos
 
         return ball_x_pos(time), ball_y_pos(time)
@@ -42,15 +44,15 @@ class Canon:
 #class Ball:
         
 
-Canon = Canon(45, 35)
+Canon = Canon(45, 20)
 
 while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
 
-    for i in range(100):
-        ball_x, ball_y = Canon.launch(i)
+    for time_step in range(10):
+        ball_x, ball_y = Canon.launch(time_step / 100)
         pygame.draw.circle(window, (0,138, 255), (ball_x, ball_y), 20)
         print(ball_x, ball_y)
    
