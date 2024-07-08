@@ -9,7 +9,6 @@ HEIGHT = 800
 BLUE = (0,138,255)
 BLACK = (0,0,0)
 FPS = 120
-RADIUS = 10
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('balls')
 
@@ -17,13 +16,16 @@ pygame.display.set_caption('balls')
 class Balls:
 
     def __init__(self):
+        #self.color = (randint(0, 255), randint(0, 255), randint(0, 255))
+        self.color = BLUE
+        self.radius = randint(8,17)
         self.x_pos = randint(200, 1200)
         self.y_pos = randint(0, 200) 
-        #self.x_vel = randint(-3, 3) 
-        self.x_vel = 0 
+        self.x_vel = randint(-3, 3) 
+        #self.x_vel = 0 
         self.y_vel = 0 
         self.x_acc = 0  
-        self.y_acc = 9.8 / 50    # Divide by 250 to normalize 
+        self.y_acc = (9.8 / 50) # Divide to normalize 
 
 
     def draw(self):
@@ -33,19 +35,28 @@ class Balls:
         self.x_pos += self.x_vel
         self.x_vel += self.x_acc
 
-        pygame.draw.circle(SCREEN, BLUE, (self.x_pos, self.y_pos), RADIUS)
+        pygame.draw.circle(SCREEN, self.color, (self.x_pos, self.y_pos), self.radius)
 
-        if self.y_pos >= HEIGHT - (RADIUS * 1.1):
-            self.y_pos = HEIGHT - (RADIUS * 1.1) - 1 
-            self.y_vel *= -(1/2)
-            print(self.y_vel)
+        if self.y_pos >= HEIGHT - (self.radius * 1.1):
+            self.y_pos = HEIGHT - (self.radius * 1.1) - 1 
+            self.y_vel *= -(.5)
+            self.x_vel *= (.8)
             
             if abs(self.y_vel) < 1:
                 self.y_acc = 0        
                 self.y_vel= 0        
 
+            print(self.x_vel)
+            if abs(self.x_vel) < 1:
+                self.x_acc = 0        
+                self.x_vel= 0        
+
+        if self.x_pos > WIDTH - self.radius:
+            self.x_vel *= -1
 
 
+        if self.x_pos < 0 + self.radius:
+            self.x_vel *= -1
 
 
 def main():
